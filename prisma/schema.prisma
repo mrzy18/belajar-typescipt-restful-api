@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model addresses {
+  id         Int      @id @default(autoincrement())
+  street     String?  @db.VarChar(255)
+  city       String?  @db.VarChar(100)
+  province   String?  @db.VarChar(100)
+  country    String   @db.VarChar(100)
+  postalCode String   @db.VarChar(10)
+  contactId  Int
+  contacts   contacts @relation(fields: [contactId], references: [id])
+}
+
+model contacts {
+  id        Int         @id @default(autoincrement())
+  firstName String      @db.VarChar(100)
+  lastName  String?     @db.VarChar(100)
+  email     String?     @db.VarChar(200)
+  phone     String?     @db.VarChar(20)
+  username  String      @db.VarChar(100)
+  addresses addresses[]
+  users     users       @relation(fields: [username], references: [username])
+}
+
+model users {
+  username String     @id @db.VarChar(100)
+  password String     @db.VarChar(100)
+  name     String     @db.VarChar(100)
+  token    String?    @db.VarChar(100)
+  contacts contacts[]
+}
+ 

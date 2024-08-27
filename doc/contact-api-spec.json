@@ -1,0 +1,1408 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Contact API",
+    "description": "OpenAPI for ContactApp RESTful API",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Muhammad Rizky",
+      "email": "mrzy18@gmail.com"
+    },
+    "license": {
+      "name": "APACHE 2.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "{protocol}://{enviroment}:3000/v1",
+      "description": "Contact API Server",
+      "variables": {
+        "enviroment": {
+          "default": "localhost",
+          "enum": [
+            "localhost",
+            "production"
+          ]
+        },
+        "protocol": {
+          "default": "http",
+          "enum": [
+            "http",
+            "https"
+          ]
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/api/users": {
+      "post": {
+        "tags": [
+          "User API"
+        ],
+        "summary": "Register User",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userRegisterReqBodySchema"
+              },
+              "example": {
+                "username": "johndoe18",
+                "password": "superSecret",
+                "name": "John Doe"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Register User Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResBodySchema"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "username": "johndoe18",
+                    "name": "John Doe"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Register User Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "failed",
+                  "data": {
+                    "message": "error message"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "tags": [
+          "User API"
+        ],
+        "summary": "Login User",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              },
+              "example": {
+                "username": "johndoe18",
+                "password": "superSecret"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "token": "token"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Login Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "failed",
+                  "data": {
+                    "message": "username or password wrong"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/current": {
+      "get": {
+        "tags": [
+          "User API"
+        ],
+        "security": [
+          {
+            "contactAuth": []
+          }
+        ],
+        "summary": "Get User",
+        "responses": {
+          "200": {
+            "description": "Get User Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userResBodySchema"
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "username": "johndoe18",
+                    "name": "John Doe"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Get User Failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "failed",
+                  "data": {
+                    "message": "internal server error"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "User API"
+        ],
+        "security": [
+          {
+            "contactAuth": []
+          }
+        ],
+        "summary": "Update User",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "name": "John Doe",
+                "password": "superSecret"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "boolean",
+                      "properties": {
+                        "username": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "username": "johndoe18",
+                    "name": "John Doe"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User API"
+        ],
+        "security": [
+          {
+            "contactAuth": []
+          }
+        ],
+        "summary": "Delete User",
+        "responses": {
+          "200": {
+            "description": "Delete Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "boolean",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "message": "delete success"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/api/contacts": {
+      "post": {
+        "security": [
+          {
+            "contactAuth": []
+          }
+        ],
+        "tags": [
+          "Contact API"
+        ],
+        "summary": "Create Contact",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "email": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "phone": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "phone"
+                ]
+              },
+              "example": {
+                "firstName": "John",
+                "lastName": "Doe",
+                "email": "johndoe18@email.com",
+                "phone": "081234567899"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        },
+                        "firsName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "phone": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "id": 1,
+                    "firsName": "John",
+                    "lastName": "Doe",
+                    "email": "johndoe18@email.com",
+                    "phone": "081234567899"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "failed",
+                  "data": {
+                    "message": "error message"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "contactAuth": []
+          }
+        ],
+        "tags": [
+          "Contact API"
+        ],
+        "summary": "Search Contact",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "description": "search with contact firstName or lastname, optional",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "required": false,
+            "description": "search with contact phone, optional",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "description": "search with email, optional",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "optional",
+            "schema": {
+              "type": "number",
+              "default": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "optional",
+            "schema": {
+              "type": "number",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "firstName": {
+                            "type": "string"
+                          },
+                          "lastName": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "phone": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "paging": {
+                      "type": "object",
+                      "properties": {
+                        "currentPage": {
+                          "type": "number"
+                        },
+                        "totalPage": {
+                          "type": "number"
+                        },
+                        "size": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": [
+                    {
+                      "id": 1,
+                      "firsName": "John",
+                      "lastName": "Doe",
+                      "email": "johndoe18@email.com",
+                      "phone": "081234567899"
+                    },
+                    {
+                      "id": 2,
+                      "firsName": "Jane",
+                      "lastName": "Doe",
+                      "email": "janedoe18@email.com",
+                      "phone": "089987654321"
+                    }
+                  ],
+                  "paging": {
+                    "currentPage": 1,
+                    "totalPage": 10,
+                    "size": 10
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/api/contacts/{contactId}": {
+      "get": {
+        "security": [
+          {
+            "contactAuth": []
+          }
+        ],
+        "tags": [
+          "Contact API"
+        ],
+        "summary": "Get Contact",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contactId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Create success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        },
+                        "firsName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "phone": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "id": 1,
+                    "firsName": "John",
+                    "lastName": "Doe",
+                    "email": "johndoe18@email.com",
+                    "phone": "081234567899"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "contactAuth": []
+          }
+        ],
+        "tags": [
+          "Contact API"
+        ],
+        "summary": "Update Contact",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contactId"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "firstName": "John",
+                "lastName": "Doe",
+                "email": "johndoe18@email.com",
+                "phone": "081234567899"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Create success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        },
+                        "firsName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "phone": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "id": 1,
+                    "firsName": "John",
+                    "lastName": "Doe",
+                    "email": "johndoe18@email.com",
+                    "phone": "081234567899"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "contactAuth": []
+          }
+        ],
+        "tags": [
+          "Contact API"
+        ],
+        "summary": "Delete Contact",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contactId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Create success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        },
+                        "firsName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "phone": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "id": 1,
+                    "firsName": "John",
+                    "lastName": "Doe",
+                    "email": "johndoe18@email.com",
+                    "phone": "081234567899"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/api/contacts/{contactId}/addresses": {
+      "post": {
+        "tags": [
+          "Address API"
+        ],
+        "security": [
+          {
+            "contactAuth": []
+          }
+        ],
+        "summary": "Create Address",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contactId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/addressReqBody"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/successAddressRes"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Address API"
+        ],
+        "security": [
+          {
+            "contactAuth": []
+          }
+        ],
+        "summary": "Get All Addresses",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contactId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number"
+                          },
+                          "street": {
+                            "type": "string"
+                          },
+                          "city": {
+                            "type": "string"
+                          },
+                          "province": {
+                            "type": "string"
+                          },
+                          "country": {
+                            "type": "string"
+                          },
+                          "postalCode": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": [
+                    {
+                      "id": 1,
+                      "street": "Boulevard street",
+                      "city": "Jakarta",
+                      "province": "Jakarta",
+                      "country": "Indonesia",
+                      "postalCode": "12345"
+                    },
+                    {
+                      "id": 2,
+                      "street": "Boulevard street",
+                      "city": "Jakarta",
+                      "province": "Jakarta",
+                      "country": "Indonesia",
+                      "postalCode": "12345"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/api/contacts/{contactId}/addresses/{addressId}": {
+      "get": {
+        "tags": [
+          "Address API"
+        ],
+        "security": [
+          {
+            "contactAuth": []
+          }
+        ],
+        "summary": "Get Address",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contactId"
+          },
+          {
+            "$ref": "#/components/parameters/addressId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/successAddressRes"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Address API"
+        ],
+        "security": [
+          {
+            "contactAuth": []
+          }
+        ],
+        "summary": "Update Address",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contactId"
+          },
+          {
+            "$ref": "#/components/parameters/addressId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/addressReqBody"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/successAddressRes"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Address API"
+        ],
+        "security": [
+          {
+            "contactAuth": []
+          }
+        ],
+        "summary": "Delete Address",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contactId"
+          },
+          {
+            "$ref": "#/components/parameters/addressId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "success",
+                  "data": {
+                    "message": "delete success"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "User API"
+    },
+    {
+      "name": "Contact API"
+    },
+    {
+      "name": "Address API"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "userRegisterReqBodySchema": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 1
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "username",
+          "password",
+          "name"
+        ]
+      },
+      "userResBodySchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "username": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "UnauthorizedErrorSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "NotFoundErrorSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Unauthorized Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UnauthorizedErrorSchema"
+            },
+            "example": {
+              "status": "error",
+              "data": {
+                "message": "Unauthorized"
+              }
+            }
+          }
+        }
+      },
+      "BadRequestError": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "status": "error",
+              "data": {
+                "message": "error message"
+              }
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "Not Found Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/NotFoundErrorSchema"
+            },
+            "example": {
+              "status": "error",
+              "data": {
+                "message": "error message"
+              }
+            }
+          }
+        }
+      },
+      "successAddressRes": {
+        "description": "Success",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "street": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "province": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "postalCode": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "example": {
+              "status": "success",
+              "data": {
+                "id": 1,
+                "street": "Boulevard street",
+                "city": "Jakarta",
+                "province": "Jakarta",
+                "country": "Indonesia",
+                "postalCode": "12345"
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "contactId": {
+        "name": "contactId",
+        "in": "path",
+        "required": true,
+        "description": "Contact id",
+        "schema": {
+          "type": "number",
+          "minLength": 1
+        }
+      },
+      "addressId": {
+        "name": "addressId",
+        "in": "path",
+        "required": true,
+        "description": "Address id",
+        "schema": {
+          "type": "number",
+          "minLength": 1
+        }
+      }
+    },
+    "requestBodies": {
+      "addressReqBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "street": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "province": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                },
+                "postalCode": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "street": "Boulevard street",
+              "city": "Jakarta",
+              "province": "Jakarta",
+              "country": "Indonesia",
+              "postalCode": "12345"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "contactAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-TOKEN",
+        "description": ""
+      }
+    }
+  }
+}
