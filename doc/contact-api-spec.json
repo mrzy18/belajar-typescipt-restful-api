@@ -57,7 +57,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Register User Success",
             "content": {
               "application/json": {
@@ -87,7 +87,7 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "message": {
+                        "errors": {
                           "type": "string"
                         }
                       }
@@ -97,7 +97,7 @@
                 "example": {
                   "status": "failed",
                   "data": {
-                    "message": "error message"
+                    "errors": "error message"
                   }
                 }
               }
@@ -170,7 +170,7 @@
               }
             }
           },
-          "400": {
+          "401": {
             "description": "Login Failed",
             "content": {
               "application/json": {
@@ -183,7 +183,7 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "message": {
+                        "errors": {
                           "type": "string"
                         }
                       }
@@ -193,7 +193,7 @@
                 "example": {
                   "status": "failed",
                   "data": {
-                    "message": "username or password wrong"
+                    "errors": "username or password wrong"
                   }
                 }
               }
@@ -244,7 +244,7 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "message": {
+                        "errors": {
                           "type": "string"
                         }
                       }
@@ -254,7 +254,7 @@
                 "example": {
                   "status": "failed",
                   "data": {
-                    "message": "internal server error"
+                    "errors": "internal server error"
                   }
                 }
               }
@@ -492,7 +492,7 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "message": {
+                        "errors": {
                           "type": "string"
                         }
                       }
@@ -502,7 +502,7 @@
                 "example": {
                   "status": "failed",
                   "data": {
-                    "message": "error message"
+                    "errors": "error message"
                   }
                 }
               }
@@ -1203,7 +1203,7 @@
           "data": {
             "type": "object",
             "properties": {
-              "message": {
+              "errors": {
                 "type": "string"
               }
             }
@@ -1219,7 +1219,7 @@
           "data": {
             "type": "object",
             "properties": {
-              "message": {
+              "errors": {
                 "type": "string"
               }
             }
@@ -1238,7 +1238,7 @@
             "example": {
               "status": "error",
               "data": {
-                "message": "Unauthorized"
+                "errors": "Unauthorized"
               }
             }
           }
@@ -1257,8 +1257,8 @@
                 "data": {
                   "type": "object",
                   "properties": {
-                    "message": {
-                      "type": "string"
+                    "errors": {
+                      "type": "object"
                     }
                   }
                 }
@@ -1267,7 +1267,7 @@
             "example": {
               "status": "error",
               "data": {
-                "message": "error message"
+                "errors": {}
               }
             }
           }
@@ -1283,7 +1283,7 @@
             "example": {
               "status": "error",
               "data": {
-                "message": "error message"
+                "errors": "error message"
               }
             }
           }
