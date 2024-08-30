@@ -1,3 +1,5 @@
+import type { users } from "@prisma/client";
+
 export type UserResponse = {
   username: string;
   name: string;
@@ -20,7 +22,7 @@ export type UpdateUserRequest = {
   password?: string
 }
 
-export function toUserResponse(user: CreateUserRequest): UserResponse {
+export function toUserResponse(user: users): UserResponse {
   return {
     username: user.username,
     name: user.name

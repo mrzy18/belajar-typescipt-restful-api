@@ -405,23 +405,17 @@
                     "minLength": 1
                   },
                   "lastName": {
-                    "type": "string",
-                    "minLength": 1
+                    "type": "string"
                   },
                   "email": {
-                    "type": "string",
-                    "minLength": 1
+                    "type": "string"
                   },
                   "phone": {
-                    "type": "string",
-                    "minLength": 1
+                    "type": "string"
                   }
                 },
                 "required": [
-                  "firstName",
-                  "lastName",
-                  "email",
-                  "phone"
+                  "firstName"
                 ]
               },
               "example": {
