@@ -11,7 +11,6 @@ import { Validation } from '../validation/validation';
 import { AddressValidation } from '../validation/address-validation';
 import { Utils } from '../util/util';
 import { prismaClient } from '../application/database';
-import { ResponseError } from '../error/response-error';
 
 export class AddressService {
   static async create(user: users, request: CreateAddressRequest): Promise<AddressResponse> {

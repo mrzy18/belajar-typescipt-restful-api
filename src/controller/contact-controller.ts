@@ -2,7 +2,6 @@ import type { Response, NextFunction } from 'express';
 import type { UserRequest } from '../type/user-request';
 import type { CreateContactRequest, SearchContactRequest, UpdateContactRequest } from '../model/contact-model';
 import { ContactService } from '../service/contact-service';
-import { logger } from '../application/logging';
 
 export class ContactController {
   static async create(req: UserRequest, res: Response, next: NextFunction) {

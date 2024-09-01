@@ -1,7 +1,13 @@
 {
   "name": "belajar-typescript-restful-api",
-  "module": "index.ts",
+  "module": "server.js",
   "type": "module",
+  "scripts": {
+    "migrate": "bunx prisma migrate dev",
+    "generate": "bunx prisma generate",
+    "compile": "bun build ./src/server.ts --outdir ./dist --target=bun --minify",
+    "start": "bun ./dist/server.js"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/express": "^4.17.21",
