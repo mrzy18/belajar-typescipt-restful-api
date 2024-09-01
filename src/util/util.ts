@@ -1,6 +1,6 @@
 import { prismaClient } from '../application/database';
 import { ResponseError } from '../error/response-error';
-import type { contacts, users } from '@prisma/client';
+import type { addresses, contacts, users } from '@prisma/client';
 
 export class Utils {
   static async isUsernameAlreadyExist(user: any) {
@@ -42,5 +42,18 @@ export class Utils {
     }
 
     return contact;
+  }
+
+  static async isAddressAvailable(addressId: number, contactId: number): Promise<addresses> {
+    const address = await prismaClient.addresses.findFirst({
+      where: {
+        id: addressId,
+        contactId,
+      },
+    });
+
+    if (!address) throw new ResponseError(404, 'Address not found');
+
+    return address;
   }
 }
